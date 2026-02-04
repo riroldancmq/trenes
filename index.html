@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de demoras lavado de formaciones</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .config-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .config-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .config-box h2 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .config-box p {
+            color: #6c757d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .config-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            font-family: monospace;
+        }
+
+        .config-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .config-btn {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .config-btn:hover {
+            background: #764ba2;
+        }
+
+        .skip-config-btn {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .skip-config-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .help-text {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-top: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .help-text a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .help-text a:hover {
+            text-decoration: underline;
+        }
+
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-box h2 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .login-box p {
+            color: #6c757d;
+            margin-bottom: 25px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .login-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .skip-btn {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .skip-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .error-message {
+            color: #dc3545;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: none;
+        }
+
+        .container.visible {
+            display: block;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .mode-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .mode-badge.editable {
+            background: #28a745;
+            color: white;
+        }
+
+        .mode-badge.readonly {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .sync-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            margin-left: 10px;
+            font-weight: 600;
+            background: #ffc107;
+            color: #000;
+        }
+
+        .sync-badge.active {
+            background: #28a745;
+            color: white;
+        }
+
+        .logout-btn, .config-gear {
+            position: absolute;
+            top: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn {
+            right: 20px;
+        }
+
+        .config-gear {
+            left: 20px;
+        }
+
+        .logout-btn:hover, .config-gear:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 25px;
+            background: #f8f9fa;
+            border-bottom: 3px solid #e9ecef;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            min-width: 150px;
+            flex: 1;
+        }
+
+        .stat-card h3 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #6c757d;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        .stat-card.verde h3 {
+            color: #28a745;
+        }
+
+        .stat-card.amarillo h3 {
+            color: #ffc107;
+        }
+
+        .stat-card.rojo h3 {
+            color: #dc3545;
+        }
+
+        .table-container {
+            padding: 25px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+            transform: scale(1.01);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .date-input {
+            padding: 8px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 0.95em;
+            width: 150px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .date-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .date-input:hover {
+            border-color: #764ba2;
+        }
+
+        .date-input:disabled {
+            background: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        .date-input::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+            min-width: 80px;
+        }
+
+        .status-verde {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+
+        .status-amarillo {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffc107;
+        }
+
+        .status-rojo {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .formacion-cell {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #2c3e50;
+        }
+
+        .actions {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .save-btn, .reset-btn, .export-report-btn, .sync-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn {
+            background: #dc3545;
+        }
+
+        .export-report-btn {
+            background: #17a2b8;
+        }
+
+        .sync-btn {
+            background: #667eea;
+        }
+
+        .save-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .reset-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .export-report-btn:hover {
+            background: #138496;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .sync-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-top: 3px solid #e9ecef;
+        }
+
+        .leyenda {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .leyenda-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .semaforo {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .semaforo-verde {
+            background: #28a745;
+        }
+
+        .semaforo-amarillo {
+            background: #ffc107;
+        }
+
+        .semaforo-rojo {
+            background: #dc3545;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            th, td {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+
+            .stats {
+                flex-direction: column;
+            }
+
+            .logout-btn, .config-gear {
+                position: static;
+                margin: 5px;
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="config-overlay" id="configOverlay">
+        <div class="config-box">
+            <h2>⚙️ Configuración Inicial</h2>
+            <p>Para sincronizar datos entre dispositivos, necesitas un token de GitHub.</p>
+            
+            <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Token de GitHub:</label>
+            <input 
+                type="text" 
+                class="config-input" 
+                id="tokenInput" 
+                placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            />
+            
+            <button class="config-btn" onclick="guardarToken()">💾 Guardar Token</button>
+            <button class="skip-config-btn" onclick="saltarConfiguracion()">⏭️ Saltar (usar sin sincronización)</button>
+            
+            <div class="help-text">
+                <strong>¿No tienes un token?</strong><br>
+                1. Ve a <a href="https://github.com/settings/tokens" target="_blank">GitHub → Settings → Tokens</a><br>
+                2. Click en "Generate new token (classic)"<br>
+                3. Marca "repo" y genera el token<br>
+                4. Copia el token y pégalo arriba<br>
+                <br>
+                <strong>Nota:</strong> El token se guarda solo en tu navegador.
+            </div>
+        </div>
+    </div>
+
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <h2>🚂 Registro de demoras</h2>
+            <p>Ingresa la contraseña para editar o continúa como visitante</p>
+            <div class="error-message" id="errorMessage"></div>
+            <input 
+                type="password" 
+                class="login-input" 
+                id="passwordInput" 
+                placeholder="Contraseña"
+                onkeypress="if(event.key==='Enter') iniciarSesion()"
+            />
+            <button class="login-btn" onclick="iniciarSesion()">🔓 Modo Edición</button>
+            <button class="skip-btn" onclick="entrarSoloLectura()">👁️ Ver como Visitante</button>
+        </div>
+    </div>
+
+    <div class="container" id="mainContainer">
+        <div class="header">
+            <button class="config-gear" onclick="mostrarConfiguracion()" title="Configurar token">⚙️</button>
+            <button class="logout-btn" onclick="cerrarSesion()" id="logoutBtn">🚪 Salir</button>
+            <h1>🚂 Registro de demoras lavado de formaciones</h1>
+            <p>Gestión de Trenes</p>
+            <span class="mode-badge" id="modeBadge"></span>
+            <span class="sync-badge" id="syncBadge">🔄 Sincronización: GitHub</span>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card verde">
+                <h3 id="count-verde">0</h3>
+                <p>✓ Al Día</p>
+            </div>
+            <div class="stat-card amarillo">
+                <h3 id="count-amarillo">0</h3>
+                <p>⚠ Precaución</p>
+            </div>
+            <div class="stat-card rojo">
+                <h3 id="count-rojo">0</h3>
+                <p>⚠ Crítico</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="count-total">0</h3>
+                <p>Total Formaciones</p>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="maintenance-table">
+                <thead>
+                    <tr>
+                        <th>Formación</th>
+                        <th>Anteúltima Intervención</th>
+                        <th>Última Intervención</th>
+                        <th>Días de Demora</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="actions" id="actionsSection" style="display: none;">
+            <button class="save-btn" onclick="guardarDatos()">💾 Guardar en GitHub</button>
+            <button class="sync-btn" onclick="sincronizarDesdeGitHub()">🔄 Actualizar desde GitHub</button>
+            <button class="export-report-btn" onclick="exportarInforme()">📄 Generar Informe TXT</button>
+            <button class="reset-btn" onclick="resetearDatos()">🗑️ Resetear Datos</button>
+        </div>
+
+        <div class="footer">
+            <div class="leyenda">
+                <div class="leyenda-item">
+                    <span class="semaforo semaforo-verde"></span>
+                    <span><strong>Verde:</strong> 0-10 días (OK)</span>
+                </div>
+                <div class="leyenda-item">
+                    <span class="semaforo semaforo-amarillo"></span>
+                    <span><strong>Amarillo:</strong> 11-20 días (Precaución)</span>
+                </div>
+                <div class="leyenda-item">
+                    <span class="semaforo semaforo-rojo"></span>
+                    <span><strong>Rojo:</strong> 21+ días (Intervención Necesaria)</span>
+                </div>
+            </div>
+            <p style="color: #6c757d; margin-top: 10px;">
+                Actualizado: <span id="fecha-actual"></span>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const PASSWORD = "admin123";
+        
+        const GITHUB_CONFIG = {
+            owner: "riroldancmq",
+            repo: "trenes",
+            branch: "main",
+            dataFile: "datos-trenes.json"
+        };
+
+        let GITHUB_TOKEN = "";
+        let isEditMode = false;
+        let fileSha = '';
+        let useSync = false;
+
+        let mantenimientoData = [
+            { formacion: 1, anteultima: "15/12/2025", ultima: "12/01/2026", dias: null },
+            { formacion: 2, anteultima: "", ultima: "", dias: null },
+            { formacion: 3, anteultima: "", ultima: "", dias: null },
+            { formacion: 4, anteultima: "26/12/2025", ultima: "07/01/2026", dias: null },
+            { formacion: 5, anteultima: "19/12/2025", ultima: "14/01/2026", dias: null },
+            { formacion: 6, anteultima: "15/01/2026", ultima: "26/01/2026", dias: null },
+            { formacion: 7, anteultima: "09/12/2025", ultima: "20/01/2026", dias: null },
+            { formacion: 8, anteultima: "21/11/2025", ultima: "01/12/2025", dias: null },
+            { formacion: 9, anteultima: "", ultima: "", dias: null },
+            { formacion: 10, anteultima: "18/12/2025", ultima: "05/01/2026", dias: null },
+            { formacion: 11, anteultima: "", ultima: "", dias: null },
+            { formacion: 12, anteultima: "29/12/2025", ultima: "13/01/2026", dias: null },
+            { formacion: 13, anteultima: "17/12/2025", ultima: "23/01/2026", dias: null },
+            { formacion: 14, anteultima: "06/11/2025", ultima: "10/12/2025", dias: null },
+            { formacion: 15, anteultima: "", ultima: "", dias: null },
+            { formacion: 16, anteultima: "22/12/2025", ultima: "22/01/2026", dias: null },
+            { formacion: 17, anteultima: "12/12/2025", ultima: "08/01/2026", dias: null },
+            { formacion: 18, anteultima: "27/11/2025", ultima: "30/12/2025", dias: null },
+            { formacion: 19, anteultima: "09/01/2026", ultima: "19/01/2026", dias: null },
+            { formacion: 20, anteultima: "30/09/2025", ultima: "21/10/2025", dias: null },
+            { formacion: 21, anteultima: "05/12/2025", ultima: "02/01/2026", dias: null },
+            { formacion: 22, anteultima: "04/12/2025", ultima: "16/01/2026", dias: null },
+            { formacion: 23, anteultima: "06/01/2026", ultima: "21/01/2026", dias: null }
+        ];
+
+        function verificarToken() {
+            const tokenGuardado = localStorage.getItem('github_token');
+            if (tokenGuardado) {
+                GITHUB_TOKEN = tokenGuardado;
+                useSync = true;
+                document.getElementById('configOverlay').style.display = 'none';
+                document.getElementById('loginOverlay').style.display = 'flex';
+            } else {
+                document.getElementById('configOverlay').style.display = 'flex';
+            }
+        }
+
+        function guardarToken() {
+            const token = document.getElementById('tokenInput').value.trim();
+            if (token && token.startsWith('ghp_')) {
+                localStorage.setItem('github_token', token);
+                GITHUB_TOKEN = token;
+                useSync = true;
+                document.getElementById('configOverlay').style.display = 'none';
+                document.getElementById('loginOverlay').style.display = 'flex';
+                mostrarNotificacion('✅ Token configurado correctamente');
+            } else {
+                alert('Por favor ingresa un token válido que empiece con "ghp_"');
+            }
+        }
+
+        function saltarConfiguracion() {
+            useSync = false;
+            document.getElementById('configOverlay').style.display = 'none';
+            document.getElementById('loginOverlay').style.display = 'flex';
+            mostrarNotificacion('⚠️ Modo sin sincronización');
+        }
+
+        function mostrarConfiguracion() {
+            const token = localStorage.getItem('github_token') || '';
+            document.getElementById('tokenInput').value = token;
+            document.getElementById('configOverlay').style.display = 'flex';
+        }
+
+        function iniciarSesion() {
+            const input = document.getElementById('passwordInput');
+            const errorMsg = document.getElementById('errorMessage');
+            
+            if (input.value === PASSWORD) {
+                isEditMode = true;
+                errorMsg.textContent = '';
+                mostrarAplicacion();
+            } else {
+                errorMsg.textContent = '❌ Contraseña incorrecta';
+                input.value = '';
+            }
+        }
+
+        function entrarSoloLectura() {
+            isEditMode = false;
+            mostrarAplicacion();
+        }
+
+        async function mostrarAplicacion() {
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('mainContainer').classList.add('visible');
+            
+            const badge = document.getElementById('modeBadge');
+            const actionsSection = document.getElementById('actionsSection');
+            
+            if (isEditMode) {
+                badge.textContent = '✏️ MODO EDICIÓN';
+                badge.className = 'mode-badge editable';
+                actionsSection.style.display = 'block';
+            } else {
+                badge.textContent = '👁️ MODO SOLO LECTURA';
+                badge.className = 'mode-badge readonly';
+                actionsSection.style.display = 'none';
+            }
+            
+            if (useSync) {
+                await cargarDesdeGitHub();
+            }
+            renderTable();
+            updateFecha();
+        }
+
+        function cerrarSesion() {
+            location.reload();
+        }
+
+        async function cargarDesdeGitHub() {
+            if (!useSync || !GITHUB_TOKEN) {
+                return;
+            }
+
+            try {
+                mostrarNotificacion('⏳ Cargando desde GitHub...');
+                
+                const url = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.dataFile}?ref=${GITHUB_CONFIG.branch}`;
+                
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    fileSha = data.sha;
+                    const content = decodeURIComponent(escape(atob(data.content)));
+                    mantenimientoData = JSON.parse(content);
+                    
+                    mantenimientoData.forEach(item => {
+                        item.dias = calcularDias(item.ultima);
+                    });
+                    
+                    mostrarNotificacion('✅ Cargado desde GitHub');
+                    actualizarSyncBadge(true);
+                } else {
+                    console.warn('⚠️ No se pudo cargar desde GitHub');
+                    mostrarNotificacion('⚠️ Error al cargar');
+                    actualizarSyncBadge(false);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarNotificacion('❌ Error de conexión');
+                actualizarSyncBadge(false);
+            }
+        }
+
+        async function guardarDatos() {
+            if (!useSync || !GITHUB_TOKEN) {
+                mostrarNotificacion('⚠️ Sync no configurada');
+                return;
+            }
+
+            try {
+                mostrarNotificacion('⏳ Guardando...');
+                
+                const content = btoa(unescape(encodeURIComponent(JSON.stringify(mantenimientoData, null, 4))));
+                const putUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.dataFile}`;
+                
+                const putResponse = await fetch(putUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Actualización - ${new Date().toLocaleString('es-AR')}`,
+                        content: content,
+                        sha: fileSha,
+                        branch: GITHUB_CONFIG.branch
+                    })
+                });
+
+                if (putResponse.ok) {
+                    const responseData = await putResponse.json();
+                    fileSha = responseData.content.sha;
+                    mostrarNotificacion('✅ Guardado en GitHub');
+                    actualizarSyncBadge(true);
+                } else {
+                    const errorData = await putResponse.json();
+                    console.error('Error:', errorData);
+                    mostrarNotificacion('❌ Error al guardar');
+                    actualizarSyncBadge(false);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarNotificacion('❌ Error de conexión');
+                actualizarSyncBadge(false);
+            }
+        }
+
+        async function sincronizarDesdeGitHub() {
+            await cargarDesdeGitHub();
+            renderTable();
+        }
+
+        function actualizarSyncBadge(success) {
+            const badge = document.getElementById('syncBadge');
+            if (!useSync) {
+                badge.textContent = '⚠️ Sin sync';
+                badge.className = 'sync-badge';
+                return;
+            }
+            
+            if (success) {
+                badge.textContent = '✅ Sincronizado';
+                badge.className = 'sync-badge active';
+            } else {
+                badge.textContent = '⚠️ Error sync';
+                badge.className = 'sync-badge';
+            }
+        }
+
+        function resetearDatos() {
+            if (confirm('¿Borrar TODOS los datos?')) {
+                mantenimientoData = mantenimientoData.map(item => ({
+                    formacion: item.formacion,
+                    anteultima: '',
+                    ultima: '',
+                    dias: null
+                }));
+                
+                renderTable();
+                mostrarNotificacion('🗑️ Datos borrados');
+            }
+        }
+
+        function mostrarNotificacion(mensaje) {
+            const notif = document.createElement('div');
+            notif.className = 'notification';
+            notif.textContent = mensaje;
+            document.body.appendChild(notif);
+            
+            setTimeout(() => {
+                notif.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => notif.remove(), 300);
+            }, 3000);
+        }
+
+        function parseDate(dateStr) {
+            if (!dateStr || dateStr.trim() === '') return null;
+            const parts = dateStr.split('/');
+            if (parts.length !== 3) return null;
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+        }
+
+        function formatToInputDate(dateStr) {
+            if (!dateStr || dateStr.trim() === '') return '';
+            const parts = dateStr.split('/');
+            if (parts.length !== 3) return '';
+            const day = parts[0].padStart(2, '0');
+            const month = parts[1].padStart(2, '0');
+            const year = parts[2];
+            return `${year}-${month}-${day}`;
+        }
+
+        function formatFromInputDate(dateStr) {
+            if (!dateStr || dateStr.trim() === '') return '';
+            const parts = dateStr.split('-');
+            if (parts.length !== 3) return '';
+            const year = parts[0];
+            const month = parts[1];
+            const day = parts[2];
+            return `${day}/${month}/${year}`;
+        }
+
+        function calcularDias(ultimaFecha) {
+            if (!ultimaFecha || ultimaFecha.trim() === '') return null;
+            
+            const fechaUltima = parseDate(ultimaFecha);
+            if (!fechaUltima) return null;
+            
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+            fechaUltima.setHours(0, 0, 0, 0);
+            
+            const diferencia = hoy - fechaUltima;
+            const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+            
+            return dias >= 0 ? dias : 0;
+        }
+
+        function actualizarFecha(formacion, campo, valor) {
+            const item = mantenimientoData.find(d => d.formacion === formacion);
+            if (!item) return;
+
+            item[campo] = formatFromInputDate(valor);
+            item.dias = calcularDias(item.ultima);
+
+            renderTable();
+        }
+
+        function getEstado(dias) {
+            if (dias === null || dias === '') return { clase: '', texto: 'Sin datos' };
+            if (dias <= 10) return { clase: 'verde', texto: 'OK' };
+            if (dias <= 20) return { clase: 'amarillo', texto: 'Precaución' };
+            return { clase: 'rojo', texto: 'CRÍTICO' };
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+
+            let countVerde = 0;
+            let countAmarillo = 0;
+            let countRojo = 0;
+
+            const datosOrdenados = [...mantenimientoData].sort((a, b) => {
+                if (a.dias !== null && b.dias !== null) {
+                    return b.dias - a.dias;
+                }
+                if (a.dias !== null) return -1;
+                if (b.dias !== null) return 1;
+                return a.formacion - b.formacion;
+            });
+
+            datosOrdenados.forEach(item => {
+                const estado = getEstado(item.dias);
+                const row = document.createElement('tr');
+
+                if (estado.clase === 'verde') countVerde++;
+                else if (estado.clase === 'amarillo') countAmarillo++;
+                else if (estado.clase === 'rojo') countRojo++;
+
+                const disabled = isEditMode ? '' : 'disabled';
+                const onchange = isEditMode ? `onchange="actualizarFecha(${item.formacion}, '{campo}', this.value)"` : '';
+
+                row.innerHTML = `
+                    <td class="formacion-cell">${item.formacion}</td>
+                    <td>
+                        <input 
+                            type="date" 
+                            class="date-input" 
+                            value="${formatToInputDate(item.anteultima)}" 
+                            ${disabled}
+                            ${onchange.replace('{campo}', 'anteultima')}
+                        />
+                    </td>
+                    <td>
+                        <input 
+                            type="date" 
+                            class="date-input" 
+                            value="${formatToInputDate(item.ultima)}" 
+                            ${disabled}
+                            ${onchange.replace('{campo}', 'ultima')}
+                        />
+                    </td>
+                    <td><strong>${item.dias !== null ? item.dias : '-'}</strong></td>
+                    <td>
+                        <span class="status-badge status-${estado.clase}">${estado.texto}</span>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('count-verde').textContent = countVerde;
+            document.getElementById('count-amarillo').textContent = countAmarillo;
+            document.getElementById('count-rojo').textContent = countRojo;
+            document.getElementById('count-total').textContent = mantenimientoData.length;
+        }
+
+        function updateFecha() {
+            const ahora = new Date();
+            const opciones = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            };
+            document.getElementById('fecha-actual').textContent = 
+                ahora.toLocaleString('es-AR', opciones);
+        }
+
+        function exportarInforme() {
+            mostrarNotificacion('📄 Función de informe aquí');
+        }
+
+        verificarToken();
+        setInterval(updateFecha, 60000);
+    </script>
+</body>
+</html>
