@@ -1,15 +1,15 @@
 [
     {
         "formacion": 1,
-        "anteultima": "04/01/2026",
-        "ultima": "21/01/2026",
-        "dias": 15
+        "anteultima": "15/12/2025",
+        "ultima": "12/01/2026",
+        "dias": 24
     },
     {
         "formacion": 2,
-        "anteultima": "06/01/2026",
-        "ultima": "01/02/2026",
-        "dias": 4
+        "anteultima": "",
+        "ultima": "",
+        "dias": null
     },
     {
         "formacion": 3,
@@ -19,33 +19,33 @@
     },
     {
         "formacion": 4,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "30/01/2026",
+        "ultima": "04/02/2026",
+        "dias": 1
     },
     {
         "formacion": 5,
-        "anteultima": "23/01/2026",
-        "ultima": "01/02/2026",
-        "dias": 4
+        "anteultima": "14/01/2026",
+        "ultima": "05/02/2026",
+        "dias": 0
     },
     {
         "formacion": 6,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "15/01/2026",
+        "ultima": "26/01/2026",
+        "dias": 10
     },
     {
         "formacion": 7,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "12/12/2025",
+        "ultima": "20/01/2026",
+        "dias": 16
     },
     {
         "formacion": 8,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "21/11/2025",
+        "ultima": "01/12/2025",
+        "dias": 66
     },
     {
         "formacion": 9,
@@ -55,9 +55,9 @@
     },
     {
         "formacion": 10,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "05/01/2026",
+        "ultima": "02/02/2026",
+        "dias": 3
     },
     {
         "formacion": 11,
@@ -67,21 +67,21 @@
     },
     {
         "formacion": 12,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "29/12/2025",
+        "ultima": "13/01/2026",
+        "dias": 23
     },
     {
         "formacion": 13,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "17/12/2025",
+        "ultima": "23/01/2026",
+        "dias": 13
     },
     {
         "formacion": 14,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "10/12/2025",
+        "ultima": "29/01/2026",
+        "dias": 7
     },
     {
         "formacion": 15,
@@ -91,50 +91,50 @@
     },
     {
         "formacion": 16,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "22/12/2025",
+        "ultima": "22/01/2026",
+        "dias": 14
     },
     {
         "formacion": 17,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "08/01/2026",
+        "ultima": "03/02/2026",
+        "dias": 2
     },
     {
         "formacion": 18,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "30/12/2025",
+        "ultima": "28/01/2026",
+        "dias": 8
     },
     {
         "formacion": 19,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "09/01/2026",
+        "ultima": "19/01/2026",
+        "dias": 17
     },
     {
         "formacion": 20,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "30/09/2025",
+        "ultima": "21/10/2025",
+        "dias": 107
     },
     {
         "formacion": 21,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "02/01/2026",
+        "ultima": "27/01/2026",
+        "dias": 9
     },
     {
         "formacion": 22,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "04/12/2025",
+        "ultima": "16/01/2026",
+        "dias": 20
     },
     {
         "formacion": 23,
-        "anteultima": "",
-        "ultima": "",
-        "dias": null
+        "anteultima": "06/01/2026",
+        "ultima": "21/01/2026",
+        "dias": 15
     }
 ]
