@@ -3,7 +3,7 @@
         "formacion": 1,
         "anteultima": "15/12/2025",
         "ultima": "12/01/2026",
-        "dias": 31
+        "dias": 32
     },
     {
         "formacion": 2,
@@ -21,31 +21,31 @@
         "formacion": 4,
         "anteultima": "30/01/2026",
         "ultima": "04/02/2026",
-        "dias": 8
+        "dias": 9
     },
     {
         "formacion": 5,
         "anteultima": "14/01/2026",
         "ultima": "05/02/2026",
-        "dias": 7
+        "dias": 8
     },
     {
         "formacion": 6,
         "anteultima": "15/01/2026",
         "ultima": "26/01/2026",
-        "dias": 17
+        "dias": 18
     },
     {
         "formacion": 7,
         "anteultima": "20/01/2026",
         "ultima": "06/02/2026",
-        "dias": 6
+        "dias": 7
     },
     {
         "formacion": 8,
         "anteultima": "21/11/2025",
         "ultima": "01/12/2025",
-        "dias": 73
+        "dias": 74
     },
     {
         "formacion": 9,
@@ -57,7 +57,7 @@
         "formacion": 10,
         "anteultima": "05/01/2026",
         "ultima": "02/02/2026",
-        "dias": 10
+        "dias": 11
     },
     {
         "formacion": 11,
@@ -69,19 +69,19 @@
         "formacion": 12,
         "anteultima": "13/01/2026",
         "ultima": "09/02/2026",
-        "dias": 3
+        "dias": 4
     },
     {
         "formacion": 13,
-        "anteultima": "17/12/2025",
-        "ultima": "23/01/2026",
-        "dias": 20
+        "anteultima": "23/01/2026",
+        "ultima": "13/02/2026",
+        "dias": 0
     },
     {
         "formacion": 14,
         "anteultima": "10/12/2025",
         "ultima": "29/01/2026",
-        "dias": 14
+        "dias": 15
     },
     {
         "formacion": 15,
@@ -93,48 +93,48 @@
         "formacion": 16,
         "anteultima": "22/12/2025",
         "ultima": "22/01/2026",
-        "dias": 21
+        "dias": 22
     },
     {
         "formacion": 17,
         "anteultima": "08/01/2026",
         "ultima": "03/02/2026",
-        "dias": 9
+        "dias": 10
     },
     {
         "formacion": 18,
         "anteultima": "30/12/2025",
         "ultima": "28/01/2026",
-        "dias": 15
+        "dias": 16
     },
     {
         "formacion": 19,
         "anteultima": "19/01/2026",
         "ultima": "10/02/2026",
-        "dias": 2
+        "dias": 3
     },
     {
         "formacion": 20,
         "anteultima": "11/02/2026",
         "ultima": "12/02/2026",
-        "dias": 0
+        "dias": 1
     },
     {
         "formacion": 21,
         "anteultima": "02/01/2026",
         "ultima": "27/01/2026",
-        "dias": 16
+        "dias": 17
     },
     {
         "formacion": 22,
         "anteultima": "04/12/2025",
         "ultima": "16/01/2026",
-        "dias": 27
+        "dias": 28
     },
     {
         "formacion": 23,
         "anteultima": "06/01/2026",
         "ultima": "21/01/2026",
-        "dias": 22
+        "dias": 23
     }
 ]
