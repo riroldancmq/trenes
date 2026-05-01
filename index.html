@@ -1234,7 +1234,8 @@
         }
 
         function mostrarPopup(estado) {
-            const filtered = mantenimientoData.filter(item => item.estado === estado);
+            const filtered = mantenimientoData.filter(item => item.estado === estado)
+                .sort((a, b) => (b.dias || 0) - (a.dias || 0));
             const titulo = estado === 'limpieza' ? '🧽 Formaciones en Limpieza' : '🔧 Formaciones en Reparación';
             
             document.getElementById('popupTitle').textContent = titulo;
