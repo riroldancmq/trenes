@@ -417,6 +417,48 @@
             font-size: 1.2em;
         }
 
+        .estado-select {
+            padding: 8px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 0.9em;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .estado-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .estado-select:disabled {
+            background: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        .estado-select.activa {
+            color: #28a745;
+            border-color: #28a745;
+        }
+
+        .estado-select.limpieza {
+            color: #17a2b8;
+            border-color: #17a2b8;
+        }
+
+        .estado-select.reparacion {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .estado-select.fuera-servicio {
+            color: #6c757d;
+            border-color: #6c757d;
+        }
+
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -576,6 +618,109 @@
             animation: slideIn 0.3s ease;
         }
 
+        .stat-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .popup-overlay.visible {
+            display: flex;
+        }
+
+        .popup-box {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            max-width: 1200px;
+            width: 90%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .popup-header h3 {
+            margin: 0;
+            font-size: 1.3em;
+        }
+
+        .popup-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .popup-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .popup-content {
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .popup-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .popup-table th {
+            background: #f8f9fa;
+            padding: 12px 10px;
+            text-align: left;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            color: #6c757d;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .popup-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .popup-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .popup-empty {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
         @keyframes slideIn {
             from {
                 transform: translateX(400px);
@@ -666,21 +811,36 @@
         </div>
 
         <div class="stats">
-            <div class="stat-card verde">
-                <h3 id="count-verde">0</h3>
+            <div class="stat-card" style="border-left: 4px solid #28a745;">
+                <h3 id="count-verde" style="color: #28a745;">0</h3>
                 <p>✓ Al Día</p>
             </div>
-            <div class="stat-card amarillo">
-                <h3 id="count-amarillo">0</h3>
+            <div class="stat-card" style="border-left: 4px solid #ffc107;">
+                <h3 id="count-amarillo" style="color: #ffc107;">0</h3>
                 <p>⚠ Precaución</p>
             </div>
-            <div class="stat-card rojo">
-                <h3 id="count-rojo">0</h3>
+            <div class="stat-card" style="border-left: 4px solid #dc3545;">
+                <h3 id="count-rojo" style="color: #dc3545;">0</h3>
                 <p>⚠ Crítico</p>
             </div>
             <div class="stat-card">
                 <h3 id="count-total">0</h3>
                 <p>Total Formaciones</p>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card" style="border-left: 4px solid #17a2b8;" onclick="mostrarPopup('limpieza')">
+                <h3 id="count-limpieza" style="color: #17a2b8;">0</h3>
+                <p>🧽 Limpieza</p>
+            </div>
+            <div class="stat-card" style="border-left: 4px solid #dc3545;" onclick="mostrarPopup('reparacion')">
+                <h3 id="count-reparacion" style="color: #dc3545;">0</h3>
+                <p>🔧 Reparación</p>
+            </div>
+            <div class="stat-card" style="border-left: 4px solid #6c757d;">
+                <h3 id="count-fuera" style="color: #6c757d;">0</h3>
+                <p>❌ Fuera de Servicio</p>
             </div>
         </div>
 
@@ -693,6 +853,7 @@
                         <th>Última Intervención</th>
                         <th>Días de Demora</th>
                         <th>Estado</th>
+                        <th>Situación</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
@@ -722,6 +883,17 @@
                     <span><strong>Rojo:</strong> 21+ días (Intervención Necesaria)</span>
                 </div>
             </div>
+            <div class="leyenda">
+                <div class="leyenda-item">
+                    <span><strong>Situación:</strong> 🧽 Limpieza</span>
+                </div>
+                <div class="leyenda-item">
+                    <span><strong>Situación:</strong> 🔧 Reparación</span>
+                </div>
+                <div class="leyenda-item">
+                    <span><strong>Situación:</strong> ❌ Fuera de Servicio</span>
+                </div>
+            </div>
             <p style="color: #6c757d; margin-top: 10px;">
                 Actualizado: <span id="fecha-actual"></span>
             </p>
@@ -744,29 +916,29 @@
         let useSync = false;
 
         let mantenimientoData = [
-            { formacion: 1, anteultima: "15/12/2025", ultima: "12/01/2026", dias: null },
-            { formacion: 2, anteultima: "", ultima: "", dias: null },
-            { formacion: 3, anteultima: "", ultima: "", dias: null },
-            { formacion: 4, anteultima: "26/12/2025", ultima: "07/01/2026", dias: null },
-            { formacion: 5, anteultima: "19/12/2025", ultima: "14/01/2026", dias: null },
-            { formacion: 6, anteultima: "15/01/2026", ultima: "26/01/2026", dias: null },
-            { formacion: 7, anteultima: "09/12/2025", ultima: "20/01/2026", dias: null },
-            { formacion: 8, anteultima: "21/11/2025", ultima: "01/12/2025", dias: null },
-            { formacion: 9, anteultima: "", ultima: "", dias: null },
-            { formacion: 10, anteultima: "18/12/2025", ultima: "05/01/2026", dias: null },
-            { formacion: 11, anteultima: "", ultima: "", dias: null },
-            { formacion: 12, anteultima: "29/12/2025", ultima: "13/01/2026", dias: null },
-            { formacion: 13, anteultima: "17/12/2025", ultima: "23/01/2026", dias: null },
-            { formacion: 14, anteultima: "06/11/2025", ultima: "10/12/2025", dias: null },
-            { formacion: 15, anteultima: "", ultima: "", dias: null },
-            { formacion: 16, anteultima: "22/12/2025", ultima: "22/01/2026", dias: null },
-            { formacion: 17, anteultima: "12/12/2025", ultima: "08/01/2026", dias: null },
-            { formacion: 18, anteultima: "27/11/2025", ultima: "30/12/2025", dias: null },
-            { formacion: 19, anteultima: "09/01/2026", ultima: "19/01/2026", dias: null },
-            { formacion: 20, anteultima: "30/09/2025", ultima: "21/10/2025", dias: null },
-            { formacion: 21, anteultima: "05/12/2025", ultima: "02/01/2026", dias: null },
-            { formacion: 22, anteultima: "04/12/2025", ultima: "16/01/2026", dias: null },
-            { formacion: 23, anteultima: "06/01/2026", ultima: "21/01/2026", dias: null }
+            { formacion: 1, anteultima: "15/12/2025", ultima: "12/01/2026", dias: null, estado: "fuera-servicio" },
+            { formacion: 2, anteultima: "", ultima: "", dias: null, estado: "fuera-servicio" },
+            { formacion: 3, anteultima: "", ultima: "", dias: null, estado: "fuera-servicio" },
+            { formacion: 4, anteultima: "26/12/2025", ultima: "07/01/2026", dias: null, estado: "fuera-servicio" },
+            { formacion: 5, anteultima: "19/12/2025", ultima: "14/01/2026", dias: null, estado: "fuera-servicio" },
+            { formacion: 6, anteultima: "15/01/2026", ultima: "26/01/2026", dias: null, estado: "fuera-servicio" },
+            { formacion: 7, anteultima: "09/12/2025", ultima: "20/01/2026", dias: null, estado: "fuera-servicio" },
+            { formacion: 8, anteultima: "21/11/2025", ultima: "01/12/2025", dias: null, estado: "fuera-servicio" },
+            { formacion: 9, anteultima: "", ultima: "", dias: null, estado: "fuera-servicio" },
+            { formacion: 10, anteultima: "18/12/2025", ultima: "05/01/2026", dias: null, estado: "fuera-servicio" },
+            { formacion: 11, anteultima: "", ultima: "", dias: null, estado: "fuera-servicio" },
+            { formacion: 12, anteultima: "29/12/2025", ultima: "13/01/2026", dias: null, estado: "fuera-servicio" },
+            { formacion: 13, anteultima: "17/12/2025", ultima: "23/01/2026", dias: null, estado: "fuera-servicio" },
+            { formacion: 14, anteultima: "06/11/2025", ultima: "10/12/2025", dias: null, estado: "fuera-servicio" },
+            { formacion: 15, anteultima: "", ultima: "", dias: null, estado: "fuera-servicio" },
+            { formacion: 16, anteultima: "22/12/2025", ultima: "22/01/2026", dias: null, estado: "fuera-servicio" },
+            { formacion: 17, anteultima: "12/12/2025", ultima: "08/01/2026", dias: null, estado: "fuera-servicio" },
+            { formacion: 18, anteultima: "27/11/2025", ultima: "30/12/2025", dias: null, estado: "fuera-servicio" },
+            { formacion: 19, anteultima: "09/01/2026", ultima: "19/01/2026", dias: null, estado: "fuera-servicio" },
+            { formacion: 20, anteultima: "30/09/2025", ultima: "21/10/2025", dias: null, estado: "fuera-servicio" },
+            { formacion: 21, anteultima: "05/12/2025", ultima: "02/01/2026", dias: null, estado: "fuera-servicio" },
+            { formacion: 22, anteultima: "04/12/2025", ultima: "16/01/2026", dias: null, estado: "fuera-servicio" },
+            { formacion: 23, anteultima: "06/01/2026", ultima: "21/01/2026", dias: null, estado: "fuera-servicio" }
         ];
 
         function verificarToken() {
@@ -879,6 +1051,9 @@
                     mantenimientoData = JSON.parse(content);
                     
                     mantenimientoData.forEach(item => {
+                        if (!item.estado) {
+                            item.estado = 'activa';
+                        }
                         item.dias = calcularDias(item.ultima);
                     });
                     
@@ -969,7 +1144,8 @@
                     formacion: item.formacion,
                     anteultima: '',
                     ultima: '',
-                    dias: null
+                    dias: null,
+                    estado: 'fuera-servicio'
                 }));
                 
                 renderTable();
@@ -1042,11 +1218,82 @@
             renderTable();
         }
 
+        function actualizarEstado(formacion, valor) {
+            const item = mantenimientoData.find(d => d.formacion === formacion);
+            if (!item) return;
+
+            item.estado = valor;
+            renderTable();
+        }
+
         function getEstado(dias) {
             if (dias === null || dias === '') return { clase: '', texto: 'Sin datos' };
             if (dias <= 10) return { clase: 'verde', texto: 'OK' };
             if (dias <= 20) return { clase: 'amarillo', texto: 'Precaución' };
             return { clase: 'rojo', texto: 'CRÍTICO' };
+        }
+
+        function mostrarPopup(estado) {
+            const filtered = mantenimientoData.filter(item => item.estado === estado);
+            const titulo = estado === 'limpieza' ? '🧽 Formaciones en Limpieza' : '🔧 Formaciones en Reparación';
+            
+            document.getElementById('popupTitle').textContent = titulo;
+            
+            if (filtered.length === 0) {
+                document.getElementById('popupContent').innerHTML = '<div class="popup-empty">No hay formaciones en este estado</div>';
+            } else {
+                let html = `
+                    <table class="popup-table">
+                        <thead>
+                            <tr>
+                                <th>Formación</th>
+                                <th>Anteúltima</th>
+                                <th>Última</th>
+                                <th>Días</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                filtered.forEach(item => {
+                    const est = getEstado(item.dias);
+                    
+                    html += `
+                        <tr>
+                            <td><strong>#${item.formacion}</strong></td>
+                            <td>${item.anteultima || '-'}</td>
+                            <td>${item.ultima || '-'}</td>
+                            <td>${item.dias !== null ? item.dias : '-'}</td>
+                            <td><span class="status-badge status-${est.clase}">${est.texto}</span></td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                document.getElementById('popupContent').innerHTML = html;
+            }
+            
+            document.getElementById('popupOverlay').classList.add('visible');
+        }
+
+        function cerrarPopup(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('popupOverlay').classList.remove('visible');
+        }
+
+        function contarPorEstado() {
+            let limpieza = 0;
+            let reparacion = 0;
+            let fuera = 0;
+            
+            mantenimientoData.forEach(item => {
+                if (item.estado === 'limpieza') limpieza++;
+                else if (item.estado === 'reparacion') reparacion++;
+                else if (item.estado === 'fuera-servicio') fuera++;
+            });
+            
+            return { limpieza, reparacion, fuera };
         }
 
         function renderTable() {
@@ -1076,6 +1323,7 @@
 
                 const disabled = isEditMode ? '' : 'disabled';
                 const onchange = isEditMode ? `onchange="actualizarFecha(${item.formacion}, '{campo}', this.value)"` : '';
+                const onchangeEstado = isEditMode ? `onchange="actualizarEstado(${item.formacion}, this.value)"` : '';
 
                 row.innerHTML = `
                     <td class="formacion-cell">${item.formacion}</td>
@@ -1101,6 +1349,17 @@
                     <td>
                         <span class="status-badge status-${estado.clase}">${estado.texto}</span>
                     </td>
+                    <td>
+                        <select 
+                            class="estado-select ${item.estado}" 
+                            ${disabled}
+                            ${onchangeEstado}
+                        >
+                            <option value="limpieza" ${item.estado === 'limpieza' ? 'selected' : ''}>🧽 Limpieza</option>
+                            <option value="reparacion" ${item.estado === 'reparacion' ? 'selected' : ''}>🔧 Reparación</option>
+                            <option value="fuera-servicio" ${item.estado === 'fuera-servicio' ? 'selected' : ''}>❌ Fuera de Servicio</option>
+                        </select>
+                    </td>
                 `;
 
                 tbody.appendChild(row);
@@ -1110,6 +1369,11 @@
             document.getElementById('count-amarillo').textContent = countAmarillo;
             document.getElementById('count-rojo').textContent = countRojo;
             document.getElementById('count-total').textContent = mantenimientoData.length;
+
+            const estados = contarPorEstado();
+            document.getElementById('count-limpieza').textContent = estados.limpieza;
+            document.getElementById('count-reparacion').textContent = estados.reparacion;
+            document.getElementById('count-fuera').textContent = estados.fuera;
         }
 
         function updateFecha() {
@@ -1132,5 +1396,16 @@
         verificarToken();
         setInterval(updateFecha, 60000);
     </script>
+
+    <div class="popup-overlay" id="popupOverlay" onclick="cerrarPopup(event)">
+        <div class="popup-box" onclick="event.stopPropagation()">
+            <div class="popup-header">
+                <h3 id="popupTitle">Formaciones</h3>
+                <button class="popup-close" onclick="cerrarPopup()">&times;</button>
+            </div>
+            <div class="popup-content" id="popupContent">
+            </div>
+        </div>
+    </div>
 </body>
 </html>
